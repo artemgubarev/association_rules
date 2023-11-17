@@ -48,10 +48,17 @@ namespace association_rules.core
                 var data = GetDataTableData();
                 InputDataValidate();
                 double min_support = Double.Parse(minSupportTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture);
+                double max_support = Double.Parse(maxSupportTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture);
                 double min_confidence = Double.Parse(minConfidenceTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture);
+                double max_confidence = Double.Parse(maxConfidenceTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture);
                 bool colsHeaders = colnamesCheckEdit.Checked;
-                var rules = AssociationRules.FindRules(data, min_support, min_confidence, colsHeaders);
+                var rules = AssociationRules.FindRules(data, out int power,
+                    min_support, max_support,
+                    min_confidence,max_confidence, colsHeaders);
                 FillResultsDataTable(rules);
+                MessageBox.Show("Ассоциативные правила построены.\n" +
+                                $"Количество правил = {rules.Count()}\n" + 
+                                $"Мощность часто встречающихся множеств = {power}");
             }
             catch (Exception exception)
             {
@@ -66,7 +73,7 @@ namespace association_rules.core
                 "Условие",
                 "Следствие",
                 "Поддержка",
-                "Достоверность",
+                "Достоверность %",
                 "Лифт",
 
             };
@@ -77,15 +84,24 @@ namespace association_rules.core
             }
             foreach (var rule in rules)
             {
-                var row = new string[colHeaders.Length];
+                var row = new object[colHeaders.Length];
+
+                double support = double.Parse(rule[4]);
+                double confidence = double.Parse(rule[5]);
+                double lift = double.Parse(rule[6]);
+
+                support *= 100;
+                confidence *= 100;
+
                 row[0] = rule[0];
                 row[1] = rule[1];
-                row[2] = rule[4];
-                row[3] = rule[5];
-                row[4] = rule[6];
+                row[2] = support;
+                row[3] = confidence;
+                row[4] = lift;
                 dataTable.Rows.Add(row);
             }
             GridViewRefresh(resultsGridControl,resultsGridView,dataTable);
+            resultsGridView.Columns[3].SortMode = ColumnSortMode.Custom;
         }
 
         private void InputDataValidate()
@@ -95,10 +111,20 @@ namespace association_rules.core
             {
                 throw new Exception("Неверно указано значение минимальной поддержки");
             }
+            if (!double.TryParse(maxSupportTextEdit.Text, NumberStyles.Any,
+                    CultureInfo.InvariantCulture, out double max_support) || max_support < 0)
+            {
+                throw new Exception("Неверно указано значение максимальной поддержки");
+            }
             if (!double.TryParse(minConfidenceTextEdit.Text, NumberStyles.Any,
                     CultureInfo.InvariantCulture, out double min_confidence) || min_confidence < 0)
             {
                 throw new Exception("Неверно указано значение минимального доверия");
+            }
+            if (!double.TryParse(maxConfidenceTextEdit.Text, NumberStyles.Any,
+                    CultureInfo.InvariantCulture, out double max_confidence) || max_confidence < 0)
+            {
+                throw new Exception("Неверно указано значение максимального доверия");
             }
         }
 
@@ -108,6 +134,13 @@ namespace association_rules.core
             var dataTable = (DataTable)gridControl.DataSource;
             int colsCount = dataTable.Columns.Count;
             int excludedColumnsCount = _excludedColumns.Count;
+
+            if (colsCount - excludedColumnsCount < 2)
+            {
+                throw new Exception("Для построения ассоциативных правил,\n" +
+                                    " необходимо иметь как минимум 2 столбца");
+            }
+
             if (dataTable != null)
             {
                 for (int i = 1; i < dataTable.Rows.Count; i++)

@@ -41,6 +41,8 @@
             this.openFileButton = new DevExpress.XtraEditors.SimpleButton();
             this.runButton = new DevExpress.XtraEditors.SimpleButton();
             this.groupControl1 = new DevExpress.XtraEditors.GroupControl();
+            this.maxSupportTextEdit = new DevExpress.XtraEditors.TextEdit();
+            this.labelControl3 = new DevExpress.XtraEditors.LabelControl();
             this.minConfidenceTextEdit = new DevExpress.XtraEditors.TextEdit();
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
@@ -50,6 +52,10 @@
             this.xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
             this.resultsGridControl = new DevExpress.XtraGrid.GridControl();
             this.resultsGridView = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.labelControl4 = new DevExpress.XtraEditors.LabelControl();
+            this.maxConfidenceTextEdit = new DevExpress.XtraEditors.TextEdit();
+            this.tablePanel1 = new DevExpress.Utils.Layout.TablePanel();
+            this.tablePanel2 = new DevExpress.Utils.Layout.TablePanel();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupboxDelimiters)).BeginInit();
@@ -62,6 +68,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.colnamesCheckEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).BeginInit();
             this.groupControl1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.maxSupportTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minConfidenceTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.minSupportTextEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
@@ -70,6 +77,11 @@
             this.xtraTabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.resultsGridControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resultsGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxConfidenceTextEdit.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).BeginInit();
+            this.tablePanel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tablePanel2)).BeginInit();
+            this.tablePanel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // gridControl
@@ -102,12 +114,7 @@
             // 
             // groupboxDelimiters
             // 
-            this.groupboxDelimiters.Controls.Add(this.otherTextEdit);
-            this.groupboxDelimiters.Controls.Add(this.lbOther);
-            this.groupboxDelimiters.Controls.Add(this.semicolonCheckEdit);
-            this.groupboxDelimiters.Controls.Add(this.spaceCheckEdit);
-            this.groupboxDelimiters.Controls.Add(this.commaCheckEdit);
-            this.groupboxDelimiters.Controls.Add(this.tabCheckEdit);
+            this.groupboxDelimiters.Controls.Add(this.tablePanel2);
             this.groupboxDelimiters.Location = new System.Drawing.Point(3, 3);
             this.groupboxDelimiters.Name = "groupboxDelimiters";
             this.groupboxDelimiters.Size = new System.Drawing.Size(244, 107);
@@ -116,68 +123,88 @@
             // 
             // otherTextEdit
             // 
-            this.otherTextEdit.Location = new System.Drawing.Point(48, 75);
+            this.tablePanel2.SetColumn(this.otherTextEdit, 1);
+            this.otherTextEdit.Location = new System.Drawing.Point(63, 56);
             this.otherTextEdit.Name = "otherTextEdit";
             this.otherTextEdit.Properties.AllowFocused = false;
-            this.otherTextEdit.Size = new System.Drawing.Size(57, 20);
+            this.tablePanel2.SetRow(this.otherTextEdit, 2);
+            this.otherTextEdit.Size = new System.Drawing.Size(54, 20);
             this.otherTextEdit.TabIndex = 3;
             this.otherTextEdit.EditValueChanged += new System.EventHandler(this.delimitersCheckEdit_CheckedChanged);
             // 
             // lbOther
             // 
-            this.lbOther.Location = new System.Drawing.Point(5, 78);
+            this.tablePanel2.SetColumn(this.lbOther, 0);
+            this.lbOther.Dock = System.Windows.Forms.DockStyle.Right;
+            this.lbOther.Location = new System.Drawing.Point(13, 54);
             this.lbOther.Name = "lbOther";
-            this.lbOther.Size = new System.Drawing.Size(37, 13);
+            this.tablePanel2.SetRow(this.lbOther, 2);
+            this.lbOther.Size = new System.Drawing.Size(44, 25);
             this.lbOther.TabIndex = 5;
-            this.lbOther.Text = "Другой";
+            this.lbOther.Text = "Другой :";
             // 
             // semicolonCheckEdit
             // 
-            this.semicolonCheckEdit.Location = new System.Drawing.Point(86, 52);
+            this.tablePanel2.SetColumn(this.semicolonCheckEdit, 2);
+            this.tablePanel2.SetColumnSpan(this.semicolonCheckEdit, 2);
+            this.semicolonCheckEdit.Location = new System.Drawing.Point(123, 28);
             this.semicolonCheckEdit.Name = "semicolonCheckEdit";
             this.semicolonCheckEdit.Properties.AllowFocused = false;
             this.semicolonCheckEdit.Properties.Caption = "Точка с запятой";
-            this.semicolonCheckEdit.Size = new System.Drawing.Size(107, 20);
+            this.tablePanel2.SetRow(this.semicolonCheckEdit, 1);
+            this.semicolonCheckEdit.Size = new System.Drawing.Size(114, 20);
             this.semicolonCheckEdit.TabIndex = 6;
             this.semicolonCheckEdit.CheckedChanged += new System.EventHandler(this.delimitersCheckEdit_CheckedChanged);
             // 
             // spaceCheckEdit
             // 
-            this.spaceCheckEdit.Location = new System.Drawing.Point(86, 26);
+            this.tablePanel2.SetColumn(this.spaceCheckEdit, 2);
+            this.tablePanel2.SetColumnSpan(this.spaceCheckEdit, 2);
+            this.spaceCheckEdit.Location = new System.Drawing.Point(123, 3);
             this.spaceCheckEdit.Name = "spaceCheckEdit";
             this.spaceCheckEdit.Properties.AllowFocused = false;
             this.spaceCheckEdit.Properties.Caption = "Пробел";
-            this.spaceCheckEdit.Size = new System.Drawing.Size(75, 20);
+            this.tablePanel2.SetRow(this.spaceCheckEdit, 0);
+            this.spaceCheckEdit.Size = new System.Drawing.Size(114, 20);
             this.spaceCheckEdit.TabIndex = 5;
             this.spaceCheckEdit.CheckedChanged += new System.EventHandler(this.delimitersCheckEdit_CheckedChanged);
             // 
             // commaCheckEdit
             // 
-            this.commaCheckEdit.Location = new System.Drawing.Point(5, 52);
+            this.tablePanel2.SetColumn(this.commaCheckEdit, 0);
+            this.tablePanel2.SetColumnSpan(this.commaCheckEdit, 2);
+            this.commaCheckEdit.Location = new System.Drawing.Point(3, 28);
             this.commaCheckEdit.Name = "commaCheckEdit";
             this.commaCheckEdit.Properties.AllowFocused = false;
             this.commaCheckEdit.Properties.Caption = "Запятая";
-            this.commaCheckEdit.Size = new System.Drawing.Size(75, 20);
+            this.tablePanel2.SetRow(this.commaCheckEdit, 1);
+            this.commaCheckEdit.Size = new System.Drawing.Size(114, 20);
             this.commaCheckEdit.TabIndex = 4;
             this.commaCheckEdit.CheckedChanged += new System.EventHandler(this.delimitersCheckEdit_CheckedChanged);
             // 
             // tabCheckEdit
             // 
-            this.tabCheckEdit.Location = new System.Drawing.Point(5, 26);
+            this.tablePanel2.SetColumn(this.tabCheckEdit, 0);
+            this.tablePanel2.SetColumnSpan(this.tabCheckEdit, 2);
+            this.tabCheckEdit.Location = new System.Drawing.Point(3, 3);
             this.tabCheckEdit.Name = "tabCheckEdit";
             this.tabCheckEdit.Properties.AllowFocused = false;
             this.tabCheckEdit.Properties.Caption = "Табуляция";
-            this.tabCheckEdit.Size = new System.Drawing.Size(75, 20);
+            this.tablePanel2.SetRow(this.tabCheckEdit, 0);
+            this.tabCheckEdit.Size = new System.Drawing.Size(114, 20);
             this.tabCheckEdit.TabIndex = 3;
             this.tabCheckEdit.CheckedChanged += new System.EventHandler(this.delimitersCheckEdit_CheckedChanged);
             // 
             // colnamesCheckEdit
             // 
-            this.colnamesCheckEdit.Location = new System.Drawing.Point(5, 78);
+            this.tablePanel1.SetColumn(this.colnamesCheckEdit, 0);
+            this.tablePanel1.SetColumnSpan(this.colnamesCheckEdit, 2);
+            this.colnamesCheckEdit.Location = new System.Drawing.Point(3, 118);
             this.colnamesCheckEdit.Name = "colnamesCheckEdit";
             this.colnamesCheckEdit.Properties.AllowFocused = false;
             this.colnamesCheckEdit.Properties.Caption = "Использовать имена столбцов";
-            this.colnamesCheckEdit.Size = new System.Drawing.Size(183, 20);
+            this.tablePanel1.SetRow(this.colnamesCheckEdit, 4);
+            this.colnamesCheckEdit.Size = new System.Drawing.Size(234, 20);
             this.colnamesCheckEdit.TabIndex = 7;
             // 
             // openFileButton
@@ -205,47 +232,71 @@
             // 
             // groupControl1
             // 
-            this.groupControl1.Controls.Add(this.colnamesCheckEdit);
-            this.groupControl1.Controls.Add(this.minConfidenceTextEdit);
-            this.groupControl1.Controls.Add(this.labelControl2);
-            this.groupControl1.Controls.Add(this.labelControl1);
-            this.groupControl1.Controls.Add(this.minSupportTextEdit);
+            this.groupControl1.Controls.Add(this.tablePanel1);
             this.groupControl1.Location = new System.Drawing.Point(3, 116);
             this.groupControl1.Name = "groupControl1";
-            this.groupControl1.Size = new System.Drawing.Size(244, 107);
+            this.groupControl1.Size = new System.Drawing.Size(244, 178);
             this.groupControl1.TabIndex = 15;
             this.groupControl1.Text = "Параметры";
             // 
+            // maxSupportTextEdit
+            // 
+            this.tablePanel1.SetColumn(this.maxSupportTextEdit, 1);
+            this.maxSupportTextEdit.Location = new System.Drawing.Point(144, 29);
+            this.maxSupportTextEdit.Name = "maxSupportTextEdit";
+            this.maxSupportTextEdit.Properties.AllowFocused = false;
+            this.tablePanel1.SetRow(this.maxSupportTextEdit, 1);
+            this.maxSupportTextEdit.Size = new System.Drawing.Size(93, 20);
+            this.maxSupportTextEdit.TabIndex = 12;
+            // 
+            // labelControl3
+            // 
+            this.tablePanel1.SetColumn(this.labelControl3, 0);
+            this.labelControl3.Location = new System.Drawing.Point(3, 32);
+            this.labelControl3.Name = "labelControl3";
+            this.tablePanel1.SetRow(this.labelControl3, 1);
+            this.labelControl3.Size = new System.Drawing.Size(134, 13);
+            this.labelControl3.TabIndex = 11;
+            this.labelControl3.Text = "Максимальная поддержка";
+            // 
             // minConfidenceTextEdit
             // 
-            this.minConfidenceTextEdit.Location = new System.Drawing.Point(140, 52);
+            this.tablePanel1.SetColumn(this.minConfidenceTextEdit, 1);
+            this.minConfidenceTextEdit.Location = new System.Drawing.Point(144, 55);
             this.minConfidenceTextEdit.Name = "minConfidenceTextEdit";
             this.minConfidenceTextEdit.Properties.AllowFocused = false;
-            this.minConfidenceTextEdit.Size = new System.Drawing.Size(99, 20);
+            this.tablePanel1.SetRow(this.minConfidenceTextEdit, 2);
+            this.minConfidenceTextEdit.Size = new System.Drawing.Size(93, 20);
             this.minConfidenceTextEdit.TabIndex = 10;
             // 
             // labelControl2
             // 
-            this.labelControl2.Location = new System.Drawing.Point(5, 55);
+            this.tablePanel1.SetColumn(this.labelControl2, 0);
+            this.labelControl2.Location = new System.Drawing.Point(3, 58);
             this.labelControl2.Name = "labelControl2";
+            this.tablePanel1.SetRow(this.labelControl2, 2);
             this.labelControl2.Size = new System.Drawing.Size(114, 13);
             this.labelControl2.TabIndex = 9;
             this.labelControl2.Text = "Минимальное доверие";
             // 
             // labelControl1
             // 
-            this.labelControl1.Location = new System.Drawing.Point(5, 29);
+            this.tablePanel1.SetColumn(this.labelControl1, 0);
+            this.labelControl1.Location = new System.Drawing.Point(3, 6);
             this.labelControl1.Name = "labelControl1";
+            this.tablePanel1.SetRow(this.labelControl1, 0);
             this.labelControl1.Size = new System.Drawing.Size(129, 13);
             this.labelControl1.TabIndex = 8;
             this.labelControl1.Text = "Минимальная поддержка";
             // 
             // minSupportTextEdit
             // 
-            this.minSupportTextEdit.Location = new System.Drawing.Point(140, 26);
+            this.tablePanel1.SetColumn(this.minSupportTextEdit, 1);
+            this.minSupportTextEdit.Location = new System.Drawing.Point(144, 3);
             this.minSupportTextEdit.Name = "minSupportTextEdit";
             this.minSupportTextEdit.Properties.AllowFocused = false;
-            this.minSupportTextEdit.Size = new System.Drawing.Size(99, 20);
+            this.tablePanel1.SetRow(this.minSupportTextEdit, 0);
+            this.minSupportTextEdit.Size = new System.Drawing.Size(93, 20);
             this.minSupportTextEdit.TabIndex = 4;
             // 
             // xtraTabControl1
@@ -300,6 +351,75 @@
             this.resultsGridView.OptionsView.ShowGroupPanel = false;
             this.resultsGridView.OptionsView.ShowIndicator = false;
             // 
+            // labelControl4
+            // 
+            this.tablePanel1.SetColumn(this.labelControl4, 0);
+            this.labelControl4.Location = new System.Drawing.Point(3, 84);
+            this.labelControl4.Name = "labelControl4";
+            this.tablePanel1.SetRow(this.labelControl4, 3);
+            this.labelControl4.Size = new System.Drawing.Size(119, 13);
+            this.labelControl4.TabIndex = 13;
+            this.labelControl4.Text = "Максимальное доверие";
+            // 
+            // maxConfidenceTextEdit
+            // 
+            this.tablePanel1.SetColumn(this.maxConfidenceTextEdit, 1);
+            this.maxConfidenceTextEdit.Location = new System.Drawing.Point(144, 81);
+            this.maxConfidenceTextEdit.Name = "maxConfidenceTextEdit";
+            this.maxConfidenceTextEdit.Properties.AllowFocused = false;
+            this.tablePanel1.SetRow(this.maxConfidenceTextEdit, 3);
+            this.maxConfidenceTextEdit.Size = new System.Drawing.Size(93, 20);
+            this.maxConfidenceTextEdit.TabIndex = 14;
+            // 
+            // tablePanel1
+            // 
+            this.tablePanel1.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 35.17F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 24.83F)});
+            this.tablePanel1.Controls.Add(this.colnamesCheckEdit);
+            this.tablePanel1.Controls.Add(this.maxConfidenceTextEdit);
+            this.tablePanel1.Controls.Add(this.labelControl1);
+            this.tablePanel1.Controls.Add(this.labelControl4);
+            this.tablePanel1.Controls.Add(this.minSupportTextEdit);
+            this.tablePanel1.Controls.Add(this.maxSupportTextEdit);
+            this.tablePanel1.Controls.Add(this.minConfidenceTextEdit);
+            this.tablePanel1.Controls.Add(this.labelControl3);
+            this.tablePanel1.Controls.Add(this.labelControl2);
+            this.tablePanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablePanel1.Location = new System.Drawing.Point(2, 23);
+            this.tablePanel1.Name = "tablePanel1";
+            this.tablePanel1.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
+            this.tablePanel1.Size = new System.Drawing.Size(240, 153);
+            this.tablePanel1.TabIndex = 17;
+            // 
+            // tablePanel2
+            // 
+            this.tablePanel2.Columns.AddRange(new DevExpress.Utils.Layout.TablePanelColumn[] {
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 60F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 60F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 60F),
+            new DevExpress.Utils.Layout.TablePanelColumn(DevExpress.Utils.Layout.TablePanelEntityStyle.Relative, 60F)});
+            this.tablePanel2.Controls.Add(this.otherTextEdit);
+            this.tablePanel2.Controls.Add(this.tabCheckEdit);
+            this.tablePanel2.Controls.Add(this.lbOther);
+            this.tablePanel2.Controls.Add(this.spaceCheckEdit);
+            this.tablePanel2.Controls.Add(this.semicolonCheckEdit);
+            this.tablePanel2.Controls.Add(this.commaCheckEdit);
+            this.tablePanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tablePanel2.Location = new System.Drawing.Point(2, 23);
+            this.tablePanel2.Name = "tablePanel2";
+            this.tablePanel2.Rows.AddRange(new DevExpress.Utils.Layout.TablePanelRow[] {
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 25F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F),
+            new DevExpress.Utils.Layout.TablePanelRow(DevExpress.Utils.Layout.TablePanelEntityStyle.Absolute, 26F)});
+            this.tablePanel2.Size = new System.Drawing.Size(240, 82);
+            this.tablePanel2.TabIndex = 17;
+            // 
             // association_rules_user_control
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -311,7 +431,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupboxDelimiters)).EndInit();
             this.groupboxDelimiters.ResumeLayout(false);
-            this.groupboxDelimiters.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.otherTextEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.semicolonCheckEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.spaceCheckEdit.Properties)).EndInit();
@@ -320,7 +439,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.colnamesCheckEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupControl1)).EndInit();
             this.groupControl1.ResumeLayout(false);
-            this.groupControl1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.maxSupportTextEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minConfidenceTextEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.minSupportTextEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).EndInit();
@@ -329,6 +448,13 @@
             this.xtraTabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.resultsGridControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.resultsGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maxConfidenceTextEdit.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tablePanel1)).EndInit();
+            this.tablePanel1.ResumeLayout(false);
+            this.tablePanel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tablePanel2)).EndInit();
+            this.tablePanel2.ResumeLayout(false);
+            this.tablePanel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -357,5 +483,11 @@
         private DevExpress.XtraTab.XtraTabPage xtraTabPage2;
         private DevExpress.XtraGrid.GridControl resultsGridControl;
         private DevExpress.XtraGrid.Views.Grid.GridView resultsGridView;
+        private DevExpress.XtraEditors.TextEdit maxSupportTextEdit;
+        private DevExpress.XtraEditors.LabelControl labelControl3;
+        private DevExpress.XtraEditors.TextEdit maxConfidenceTextEdit;
+        private DevExpress.XtraEditors.LabelControl labelControl4;
+        private DevExpress.Utils.Layout.TablePanel tablePanel1;
+        private DevExpress.Utils.Layout.TablePanel tablePanel2;
     }
 }

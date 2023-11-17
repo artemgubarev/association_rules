@@ -22,10 +22,11 @@ def generate_new_combinations(old_combinations):
             yield item
 
 
-def generate_new_combinations_low_memory(old_combinations, X, min_support, is_sparse):
+def generate_new_combinations_low_memory(old_combinations, X, min_support, max_support,is_sparse):
     items_types_in_previous_step = np.unique(old_combinations.flatten())
     rows_count = X.shape[0]
-    threshold = min_support * rows_count
+    threshold_min = min_support * rows_count
+    threshold_max = max_support * rows_count
     for old_combination in old_combinations:
         max_combination = old_combination[-1]
         mask = items_types_in_previous_step > max_combination
@@ -38,14 +39,14 @@ def generate_new_combinations_low_memory(old_combinations, X, min_support, is_sp
         else:
             mask_rows = X[:, old_tuple].all(axis=1)
             supports = X[mask_rows][:, valid_items].sum(axis=0)
-        valid_indices = (supports >= threshold).nonzero()[0]
+        valid_indices = ((supports >= threshold_min) & (supports <= threshold_max)).nonzero()[0]
         for index in valid_indices:
             yield supports[index]
             yield from old_tuple
             yield valid_items[index]
 
 def apriori(
-    df, min_support=0.5, use_colnames=False, max_len=None, verbose=0, low_memory=False
+    df, min_support=0.5, max_support=1.0, use_colnames=False, max_len=None, verbose=0, low_memory=False
 ):
     def _support(_x, _n_rows, _is_sparse):
         out = np.sum(_x, axis=0) / _n_rows
@@ -73,8 +74,8 @@ def apriori(
         is_sparse = False
     support = _support(X, X.shape[0], is_sparse)
     ary_col_idx = np.arange(X.shape[1])
-    support_dict = {1: support[support >= min_support]}
-    itemset_dict = {1: ary_col_idx[support >= min_support].reshape(-1, 1)}
+    support_dict = {1: support[(support >= min_support) & (support <= max_support)]}
+    itemset_dict = {1: ary_col_idx[(support >= min_support) & (support <= max_support)].reshape(-1, 1)}
     max_itemset = 1
     rows_count = float(X.shape[0])
 
@@ -85,7 +86,7 @@ def apriori(
 
         if low_memory:
             combin = generate_new_combinations_low_memory(
-                itemset_dict[max_itemset], X, min_support, is_sparse
+                itemset_dict[max_itemset], X, min_support,max_support, is_sparse
             )
             # slightly faster than creating an array from a list of tuples
             combin = np.fromiter(combin, dtype=int)
@@ -125,7 +126,7 @@ def apriori(
                 _bools = np.all(X[:, combin], axis=2)
 
             support = _support(np.array(_bools), rows_count, is_sparse)
-            _mask = (support >= min_support).reshape(-1)
+            _mask = ((support >= min_support) & (support <= max_support)).reshape(-1)
             if any(_mask):
                 itemset_dict[next_max_itemset] = np.array(combin[_mask])
                 support_dict[next_max_itemset] = np.array(support[_mask])
@@ -159,7 +160,7 @@ def apriori(
 
 # ------------------------------------ association rules ----------------------
 
-def association_rules(df, metric="confidence", min_threshold=0.8, support_only=False): 
+def association_rules(df, metric="confidence", min_threshold=0.8,max_threshold=1.0, support_only=False): 
     if not df.shape[0]:
         raise ValueError(
             "The input DataFrame `df` containing " "the frequent itemsets is empty."
@@ -274,7 +275,7 @@ def association_rules(df, metric="confidence", min_threshold=0.8, support_only=F
                     # check for the threshold
 
                 score = metric_dict[metric](sAC, sA, sC)
-                if score >= min_threshold:
+                if ((score >= min_threshold) & (score <= max_threshold)):
                     rule_antecedents.append(antecedent)
                     rule_consequents.append(consequent)
                     rule_supports.append([sAC, sA, sC])
@@ -517,10 +518,10 @@ te = TransactionEncoder()
 te_ary = te.fit(result_list).transform(result_list)
 df = pd.DataFrame(te_ary, columns=te.columns_)
 
-frequent_itemsets = apriori(df, min_support=support, use_colnames=headers)
+frequent_itemsets = apriori(df,min_support=min_support,max_support=max_support,use_colnames=headers)
 
 rules = []
 if frequent_itemsets.shape[0]:
-    result = association_rules(frequent_itemsets, metric="confidence", min_threshold=confidence)
+    result = association_rules(frequent_itemsets, metric="confidence", min_threshold=min_confidence, max_threshold=max_confidence)
     np.set_printoptions(threshold = np.inf)
     rules = result.to_numpy()
