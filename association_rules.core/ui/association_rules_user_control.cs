@@ -145,7 +145,7 @@ namespace association_rules.core
             {
                 for (int i = 1; i < dataTable.Rows.Count; i++)
                 {
-                    string[] row = new string[colsCount - excludedColumnsCount];
+                    var row = new List<string>();
                     int diff = 0;
                     for (int j = 0; j < colsCount; j++)
                     {
@@ -159,9 +159,9 @@ namespace association_rules.core
                         {
                             throw new Exception("Одно из значений таблицы является пустым!");
                         }
-                        row[j - diff] = value;
+                        row.Add(value);
                     }
-                    data.Add(row);
+                    data.Add(row.ToArray());
                 }
             }
             return data;
