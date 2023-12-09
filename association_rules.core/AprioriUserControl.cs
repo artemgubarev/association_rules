@@ -13,7 +13,7 @@ using System.Windows.Forms;
 
 namespace association_rules.core
 {
-    public partial class association_rules_user_control : DevExpress.XtraEditors.XtraUserControl
+    public partial class AprioriUserControl : DevExpress.XtraEditors.XtraUserControl
     {
         private readonly RepositoryItemCheckEdit _repositoryCheckEdit = new RepositoryItemCheckEdit()
         {
@@ -25,11 +25,11 @@ namespace association_rules.core
         private string _currentFilePath;
         private readonly List<int> _excludedColumns = new List<int>();
 
-        public association_rules_user_control()
+        public AprioriUserControl()
         {
             InitializeComponent();
-            
             _repositoryCheckEdit.QueryCheckStateByValue += _repositoryCheckEdit_QueryCheckStateByValue;
+            FillInalidData();
         }
 
         private void _repositoryCheckEdit_QueryCheckStateByValue(object sender, DevExpress.XtraEditors.Controls.QueryCheckStateByValueEventArgs e)
@@ -43,27 +43,36 @@ namespace association_rules.core
 
         private void runButton_Click(object sender, EventArgs e)
         {
-            try
-            {
+            //try
+            //{
                 var data = GetDataTableData();
-                InputDataValidate();
+                InputDataValidate(data.ElementAt(0).Length);
                 double min_support = Double.Parse(minSupportTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture);
                 double max_support = Double.Parse(maxSupportTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture);
                 double min_confidence = Double.Parse(minConfidenceTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture);
                 double max_confidence = Double.Parse(maxConfidenceTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture);
+                int transactionColumnIndex = int.Parse(tranColIndexTextEdit.Text);
+                int tItemColIndex = int.Parse(tItemColIndexTextEdit.Text);
                 bool colsHeaders = colnamesCheckEdit.Checked;
-                var rules = AssociationRules.FindRules(data, out int power,
+                Apriori.Rules(
+                    data, out int power,
+                     transactionColumnIndex, tItemColIndex,
                     min_support, max_support,
-                    min_confidence,max_confidence, colsHeaders);
-                FillResultsDataTable(rules);
-                MessageBox.Show("Ассоциативные правила построены.\n" +
-                                $"Количество правил = {rules.Count()}\n" + 
-                                $"Мощность часто встречающихся множеств = {power}");
-            }
-            catch (Exception exception)
-            {
-                MessageBox.Show(exception.Message);
-            }
+                    min_confidence, max_confidence, 
+                    colsHeaders
+                    );
+                //var rules = AssociationRulesPythonAdapter.Rules(data, out int power,
+                //    min_support, max_support,
+                //    min_confidence,max_confidence, colsHeaders);
+                //FillResultsDataTable(rules);
+                //MessageBox.Show("Ассоциативные правила построены.\n" +
+                //                $"Количество правил = {rules.Count()}\n" + 
+                //                $"Мощность часто встречающихся множеств = {power}");
+            //}
+            //catch (Exception exception)
+            //{
+            //    MessageBox.Show(exception.Message);
+            //}
         }
 
         private void FillResultsDataTable(IEnumerable<string[]> rules)
@@ -104,27 +113,60 @@ namespace association_rules.core
             resultsGridView.Columns[3].SortMode = ColumnSortMode.Custom;
         }
 
-        private void InputDataValidate()
+        private void InputDataValidate(int dataLength)
         {
+            string incorrectErrorMessage = "Некорректно задано значение ";
+            string noNegativeValueMessage = "Значение не может быть отрицательным.\n Имя значения - ";
             if (!double.TryParse(minSupportTextEdit.Text, NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out double min_support) || min_support < 0)
+                    CultureInfo.InvariantCulture, out double min_support))
             {
-                throw new Exception("Неверно указано значение минимальной поддержки");
+                throw new Exception(incorrectErrorMessage + "минимальной поддержки.");
             }
             if (!double.TryParse(maxSupportTextEdit.Text, NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out double max_support) || max_support < 0)
+                    CultureInfo.InvariantCulture, out double max_support))
             {
-                throw new Exception("Неверно указано значение максимальной поддержки");
+                throw new Exception(incorrectErrorMessage +"максимальной поддержки.");
             }
             if (!double.TryParse(minConfidenceTextEdit.Text, NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out double min_confidence) || min_confidence < 0)
+                    CultureInfo.InvariantCulture, out double min_confidence))
             {
-                throw new Exception("Неверно указано значение минимального доверия");
+                throw new Exception(incorrectErrorMessage + "минимального доверия");
             }
             if (!double.TryParse(maxConfidenceTextEdit.Text, NumberStyles.Any,
-                    CultureInfo.InvariantCulture, out double max_confidence) || max_confidence < 0)
+                    CultureInfo.InvariantCulture, out double max_confidence))
             {
-                throw new Exception("Неверно указано значение максимального доверия");
+                throw new Exception(incorrectErrorMessage + "максимального доверия");
+            }
+            if (!int.TryParse(tranColIndexTextEdit.Text, NumberStyles.Any,
+                    CultureInfo.InvariantCulture, out int transactionIndex))
+            {
+                throw new Exception(incorrectErrorMessage + " столбца транзакции");
+            }
+            if (!int.TryParse(tItemColIndexTextEdit.Text, NumberStyles.Any,
+                    CultureInfo.InvariantCulture, out int tItemColIndex))
+            {
+                throw new Exception(incorrectErrorMessage + " столбец элемента транзакции");
+            }
+            if (min_support < 0)
+            {
+                throw new Exception(noNegativeValueMessage + "минимальная поддержка");
+            }
+            if (min_confidence < 0)
+            {
+                throw new Exception(noNegativeValueMessage + "минимальное доверие");
+            }
+            if (max_confidence < 0)
+            {
+                throw new Exception(noNegativeValueMessage + "максимальное доверие");
+            }
+            if (transactionIndex < 0 || transactionIndex > dataLength)
+            {
+                throw new Exception("Номер столбца транзакции должен быть в диапозоне [0, количество столбцов]");
+            }
+            if (tItemColIndex < 0 || tItemColIndex > dataLength || tItemColIndex == transactionIndex)
+            {
+                throw new Exception("Номер столбца элемента транзакции должен быть в диапозоне [0, количество столбцов]," +
+                                    "и не совпадать со столбцом транзакции.");
             }
         }
 
@@ -266,6 +308,16 @@ namespace association_rules.core
             UpdateDataTable();
         }
 
+        private void FillInalidData()
+        {
+            minSupportTextEdit.Text = "0.01";
+            maxSupportTextEdit.Text = "0.9";
+            minConfidenceTextEdit.Text = "0.2";
+            maxConfidenceTextEdit.Text = "0.9";
+            tranColIndexTextEdit.Text = "0";
+            tItemColIndexTextEdit.Text = "1";
+        }
+
         #region GridView
         private void gridView_CustomRowCellEdit(object sender, DevExpress.XtraGrid.Views.Grid.CustomRowCellEditEventArgs e)
         {
@@ -319,6 +371,7 @@ namespace association_rules.core
         }
 
         #endregion
+
         
     }
 }

@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.association_rules_user_control1 = new association_rules.core.association_rules_user_control();
+            this.association_rules_user_control1 = new association_rules.core.AprioriUserControl();
             this.SuspendLayout();
             // 
             // association_rules_user_control1
@@ -54,7 +54,7 @@
 
         #endregion
 
-        private core.association_rules_user_control association_rules_user_control1;
+        private core.AprioriUserControl association_rules_user_control1;
     }
 }
 
