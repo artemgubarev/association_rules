@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using DevExpress.Utils.Drawing.Animation;
 
 namespace association_rules.core
 {
@@ -19,8 +20,8 @@ namespace association_rules.core
         /// <param name="minConfidence"></param>
         /// <param name="maxConfidence"></param>
         /// <param name="colHeaders"></param>
-        internal static void Rules(
-            IEnumerable<string[]> inputData, out int power,
+        internal IEnumerable<object[]> Rules(
+            IEnumerable<object[]> inputData, out int power,
             int transactColIndex = 0, int tItemColIndex = 1,
             double minSupport = 0.5, double maxSupport = 1.0,
             double minConfidence = 0.5, double maxConfidence = 1.0,
@@ -34,57 +35,77 @@ namespace association_rules.core
 
             var encoder = new TransactionEncoder();
             bool[,] encodeArray = encoder.Transform(inputData, transactColIndex, tItemColIndex);
-            string[] itemSet = encoder.ItemSet;
-
-            
+            object[] itemSet = encoder.ItemSet;
 
             var supportDict =
-                GetSupportAllCombin(encodeArray,itemSet, transactColIndex, tItemColIndex, minSupport, maxSupport);
+                SupportAllCombin(encodeArray, itemSet, minSupport, maxSupport);
 
             var rules = new List<object[]>();
+            int datasetNum = inputData.Count();
 
             foreach (var item in supportDict)
             {
                 var array = GetArrayFromKey(item.Key);
-                if (array.Count() == 1)
+                int lenght = array.Length;
+                if (lenght == 1)
                     continue;
+                power = Math.Max(power, lenght);
                 for (int c = 1; c < array.Count(); c++)
                 {
-                    var subsets = GenerateSubsets(array.ToArray(), c);
-                    
+                    var subsets = Utilities.Subsets(array.ToArray(), c);
+
                     foreach (var subset in subsets)
                     {
-                        var condition = array;
-                        var consequence = subset.ToArray();
-                        var aC = array.Except(subset);
-                        string conditionKey = GetKeyFromArray(condition);
-                        string consequenceKey = GetKeyFromArray(consequence);
-                        string aCKey = GetKeyFromArray(aC);
-                        double conditionSupp = supportDict[conditionKey];
-                        double consequenceSupp = supportDict[consequenceKey];
-                        double aCSupp = supportDict[aCKey];
-                        double support = conditionSupp;
-                        double confidence = conditionSupp / consequenceSupp;
-                        double lift = confidence / aCSupp;
-                        var rule = BuildRule(itemSet, condition.Except(subset).ToArray(), consequence.ToArray(),
-                            support, confidence, lift);
+                        var XuY = array;
+                        var X = subset.ToArray();
+                        var Y = array.Except(subset);
+
+                        string XuYkey = GetKeyFromArray(XuY);
+                        string Xkey = GetKeyFromArray(X);
+                        string Ykey = GetKeyFromArray(Y);
+
+                        double XuYsupp = supportDict[XuYkey];
+                        double Xsupp = supportDict[Xkey];
+                        double Ysupp = supportDict[Ykey];
+
+                        double ruleSupp = XuYsupp;
+                        double confidence = XuYsupp / Xsupp;
+
+                        if (confidence < minConfidence || confidence > maxConfidence)
+                        {
+                            continue;
+                        }
+                        double lift = confidence / Ysupp;
+                        var rule = BuildRule(itemSet, XuY.Except(subset).ToArray(), X.ToArray(),
+                            ruleSupp, confidence, lift);
                         rules.Add(rule);
                     }
                 }
             }
+            return rules;
         }
 
-        private static object[] BuildRule
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="itemSet"></param>
+        /// <param name="condition"></param>
+        /// <param name="consequence"></param>
+        /// <param name="support"></param>
+        /// <param name="confidence"></param>
+        /// <param name="lift"></param>
+        /// <returns></returns>
+        private object[] BuildRule
         (
-            string[] itemSet, 
-            int[] condition, int[] consequence, 
+            object[] itemSet,
+            int[] condition, int[] consequence,
             double support,
             double confidence, double lift
             )
         {
             string conditionStr = string.Empty;
             string consequenceStr = string.Empty;
-            foreach (var index   in condition)
+            foreach (var index in condition)
             {
                 conditionStr += itemSet[index] + ",";
             }
@@ -95,88 +116,76 @@ namespace association_rules.core
             conditionStr = conditionStr.Remove(conditionStr.Length - 1, 1);
             consequenceStr = consequenceStr.Remove(consequenceStr.Length - 1, 1);
 
-            double suppPercentage = ConvertToPercentages(support);
-            double confidencePercentage = ConvertToPercentages(confidence);
+            // конвертировать в проценты
+            support *= 100;
+            confidence *= 100;
             object[] result =
             {
                 conditionStr, consequenceStr,
-                suppPercentage, confidencePercentage,
+                support, confidence,
                 lift
             };
             return result;
         }
 
-        private static double ConvertToPercentages(double value)
-        {
-            return value * 100;
-        }
 
-        static List<List<int>> GenerateSubsets(int[] arr, int length)
-        {
-            var result = new List<List<int>>();
-            GenerateSubsetsHelper(arr, length, 0, new List<int>(), result);
-            return result;
-        }
-
-        static void GenerateSubsetsHelper(int[] arr, int length, int index, List<int> currentSubset, List<List<int>> result)
-        {
-            if (length == 0)
-            {
-                result.Add(new List<int>(currentSubset));
-                return;
-            }
-            if (index == arr.Length)
-            {
-                return;
-            }
-            currentSubset.Add(arr[index]);
-            GenerateSubsetsHelper(arr, length - 1, index + 1, currentSubset, result);
-            currentSubset.RemoveAt(currentSubset.Count - 1);
-            GenerateSubsetsHelper(arr, length, index + 1, currentSubset, result);
-        }
-
-
-        private static Dictionary<string, double> GetSupportAllCombin(
-            bool[,] encodeArray, string[] itemSet,
-            int transactColIndex = 0, int tItemColIndex = 1,
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="combinations"></param>
+        /// <param name="support"></param>
+        /// <param name="minSupport"></param>
+        /// <param name="maxSupport"></param>
+        private void FilterSupport(
+            ref int[][] combinations, ref double[] support,
             double minSupport = 0.5, double maxSupport = 1.0)
         {
-           
-            double[] support = Supports(encodeArray);
-            int[] indexes = Enumerable.Range(0, itemSet.Length).ToArray();
-
             var excludeIndexes =
                 Utilities.GetExcludedIndexes(support, x => x <= minSupport || x >= maxSupport);
-            var supportsList = new List<IEnumerable<double>>
-            {
-                Utilities.RemoveElementsByIndex(support, excludeIndexes)
-            };
-            var items = Utilities.RemoveElementsByIndex(indexes, excludeIndexes);
-            var items2D = Make2DArray(items, items.Count(), width: 1);
-            var itemSetList = new List<IEnumerable<IEnumerable<int>>>();
-            itemSetList.Add(items2D);
+            support = Utilities.RemoveElementsByIndex(support, excludeIndexes).ToArray();
+            combinations = Utilities.RemoveElementsByIndex(combinations, excludeIndexes).ToArray();
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="encodeArray"></param>
+        /// <param name="itemSet"></param>
+        /// <param name="minSupport"></param>
+        /// <param name="maxSupport"></param>
+        /// <returns></returns>
+        private Dictionary<string, double> SupportAllCombin(
+            bool[,] encodeArray, object[] itemSet,
+            double minSupport = 0.5, double maxSupport = 1.0)
+        {
+            double[] support = Support(encodeArray);
+            var supportsList = new List<double[]> { support };
+
+            int[] indexes = Enumerable.Range(0, itemSet.Length).ToArray();
+            int[][] combinations = Utilities.Make2DArray(indexes, indexes.Length, width: 1).ToArray();
+            FilterSupport(ref combinations, ref support, minSupport, maxSupport);
+            var itemSetList = new List<int[][]>();
+            itemSetList.Add(combinations);
 
             int maxItemset = 1;
+
             while (true)
             {
                 int nextMaxItemset = maxItemset + 1;
-                var combinations
+                combinations
                     = GenerateNewCombinations(itemSetList[maxItemset - 1]);
-                if (combinations.Count() == 0)
+                if (combinations.Length == 0)
                 {
                     break;
                 }
-                var extractSubarrays = ExtractSubarrays(encodeArray, combinations);
-                var bools = CheckAll(extractSubarrays);
-                support = Supports(bools);
-                excludeIndexes =
-                    Utilities.GetExcludedIndexes(support, x => x <= minSupport || x >= maxSupport);
-                bool any = support.Length != excludeIndexes.Count();
-                if (any)
+                var extractSubarrays = Utilities.ExtractSubarrays(encodeArray, combinations);
+                var bools = Utilities.CheckAll(extractSubarrays);
+                support = Support(bools);
+                FilterSupport(ref combinations, ref support, minSupport, maxSupport);
+                if (support.Length != 0)
                 {
-                    supportsList.Add(Utilities.RemoveElementsByIndex(support, excludeIndexes));
-                    items2D = Utilities.RemoveElementsByIndex(combinations, excludeIndexes);
-                    itemSetList.Add(items2D);
+                    supportsList.Add(support);
+                    itemSetList.Add(combinations);
                     maxItemset = nextMaxItemset;
                 }
                 else
@@ -187,7 +196,7 @@ namespace association_rules.core
             var supportDict = new Dictionary<string, double>();
             for (int i = 0; i < itemSetList.Count; i++)
             {
-                for (int j = 0; j < itemSetList[i].Count(); j++)
+                for (int j = 0; j < itemSetList[i].Length; j++)
                 {
                     string key = GetKeyFromArray(itemSetList[i].ElementAt(j));
                     supportDict.Add(key, supportsList[i].ElementAt(j));
@@ -196,7 +205,12 @@ namespace association_rules.core
             return supportDict;
         }
 
-        private static string GetKeyFromArray(IEnumerable<int> array)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="array"></param>
+        /// <returns></returns>
+        private string GetKeyFromArray(IEnumerable<int> array)
         {
             string key = string.Empty;
             foreach (int i in array)
@@ -207,7 +221,12 @@ namespace association_rules.core
             return key;
         }
 
-        private static IEnumerable<int> GetArrayFromKey(string key)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        private int[] GetArrayFromKey(string key)
         {
             string[] elements = key.Split(',');
             int[] array = new int[elements.Length];
@@ -218,68 +237,12 @@ namespace association_rules.core
             return array;
         }
 
-        private static bool[,] CheckAll(bool[,,] subarrays)
-        {
-            int numRows = subarrays.GetLength(0);
-            int numCombin = subarrays.GetLength(1);
-
-            bool[,] result = new bool[numRows, numCombin];
-
-            for (int i = 0; i < numRows; i++)
-            {
-                for (int j = 0; j < numCombin; j++)
-                {
-                    result[i, j] = subarrays[i, j, 0];
-                    for (int k = 1; k < subarrays.GetLength(2); k++)
-                    {
-                        result[i, j] &= subarrays[i, j, k];
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        private static bool[,,] ExtractSubarrays(bool[,] X, IEnumerable<IEnumerable<int>> combin)
-        {
-            int numRows = X.GetLength(0);
-            int numCombin = combin.Count();
-            int numCols = combin.ElementAt(0).Count();
-
-            bool[,,] subarrays = new bool[numRows, numCombin, numCols];
-
-            for (int i = 0; i < numRows; i++)
-            {
-                for (int j = 0; j < numCombin; j++)
-                {
-                    for (int k = 0; k < numCols; k++)
-                    {
-                        subarrays[i, j, k] = X[i, combin.ElementAt(j).ElementAt(k)];
-                    }
-                }
-            }
-
-            return subarrays;
-        }
-
-        private static List<List<int>> ToList2D(IEnumerable<IEnumerable<int>> array)
-        {
-            var result = new List<List<int>>();
-
-            for (int i = 0; i < array.Count(); i++)
-            {
-                var list = new List<int>();
-                for (int j = 0; j < array.ElementAt(0).Count(); j++)
-                {
-                    list.Add(array.ElementAt(i).ElementAt(j));
-                }
-                result.Add(list);
-            }
-
-            return result;
-        }
-
-        private static double[] Supports(bool[,] encodeArray)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="encodeArray"></param>
+        /// <returns></returns>
+        private double[] Support(bool[,] encodeArray)
         {
             int transactionsNum = encodeArray.GetLength(0);
             int itemsetNum = encodeArray.GetLength(1);
@@ -289,7 +252,7 @@ namespace association_rules.core
                 int count = 0;
                 for (int j = 0; j < transactionsNum; j++)
                 {
-                    if (encodeArray[j,i])
+                    if (encodeArray[j, i])
                     {
                         count++;
                     }
@@ -300,10 +263,15 @@ namespace association_rules.core
             return supports.ToArray();
         }
 
-        private static IEnumerable<IEnumerable<int>> GenerateNewCombinations(IEnumerable<IEnumerable<int>> oldCombinations)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="oldCombinations"></param>
+        /// <returns></returns>
+        private int[][] GenerateNewCombinations(int[][] oldCombinations)
         {
             var itemsTypesInPreviousStep = oldCombinations.SelectMany(combination => combination).Distinct().ToList();
-            var newCombinations = new List<IEnumerable<int>>();
+            var newCombinations = new List<int[]>();
             foreach (var oldCombination in oldCombinations)
             {
                 int maxCombination = oldCombination.Last();
@@ -311,24 +279,10 @@ namespace association_rules.core
                 var oldTuple = new List<int>(oldCombination);
                 foreach (int item in validItems)
                 {
-                    newCombinations.Add(oldTuple.Concat(new List<int> { item }).ToList());
+                    newCombinations.Add(oldTuple.Concat(new List<int> { item }).ToArray());
                 }
             }
-            return newCombinations;
-        }
-        private static IEnumerable<IEnumerable<T>> Make2DArray<T>(IEnumerable<T> input, int height, int width)
-        {
-            var output = new List<List<T>>();
-            var inputArray = input.ToArray();
-            for (int i = 0; i < height; i++)
-            {
-                output.Add(new List<T>());
-                for (int j = 0; j < width; j++)
-                {
-                    output.Last().Add(inputArray[i * width + j]);
-                }
-            }
-            return output;
+            return newCombinations.ToArray();
         }
     }
 }

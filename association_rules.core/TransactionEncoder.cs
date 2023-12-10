@@ -1,37 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DevExpress.XtraEditors.TableLayout;
 
 namespace association_rules.core
 {
+    /// <summary>
+    /// 
+    /// </summary>
     internal class TransactionEncoder
     {
-        internal string[] ItemSet { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        internal object[] ItemSet { get; private set; }
 
-        internal bool[,] Transform(IEnumerable<string[]> input_data, int transactColIndex = 0, int tItemColIndex = 1)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inputData"></param>
+        /// <param name="transactColIndex"></param>
+        /// <param name="tItemColIndex"></param>
+        /// <returns></returns>
+        internal bool[,] Transform(IEnumerable<object[]> inputData, int transactColIndex = 0, int tItemColIndex = 1)
         {
-            string[] tansactUniqueItems = GetUniqueItems(input_data, transactColIndex);
-            string[] elementUniqueItems = GetUniqueItems(input_data, tItemColIndex);
-            bool[,] encoderArray = new bool[tansactUniqueItems.Length, elementUniqueItems.Length];
-            foreach (var row in input_data)
+            object[] transactUniqueItems = GetUniqueItems(inputData, transactColIndex);
+            object[] elementUniqueItems = GetUniqueItems(inputData, tItemColIndex);
+            bool[,] encoderArray = new bool[transactUniqueItems.Length, elementUniqueItems.Length];
+            foreach (var row in inputData)
             {
-                int t_index = Array.IndexOf(tansactUniqueItems,row[transactColIndex]);
-                int e_index = Array.IndexOf(elementUniqueItems,row[tItemColIndex]);
-                encoderArray[t_index, e_index] = true;
+                int tIndex = Array.IndexOf(transactUniqueItems,row[transactColIndex]);
+                int eIndex = Array.IndexOf(elementUniqueItems,row[tItemColIndex]);
+                encoderArray[tIndex, eIndex] = true;
             }
             ItemSet = elementUniqueItems;
             return encoderArray;
         }
 
-        private string[] GetUniqueItems(IEnumerable<string[]> input_data, int transactionColumnId = 0)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inputData"></param>
+        /// <param name="transactColIndex"></param>
+        /// <returns></returns>
+        private object[] GetUniqueItems(IEnumerable<object[]> inputData, int transactColIndex = 0)
         {
-            string[] transactions = new string[input_data.Count()];
+            object[][] dataArray = inputData.ToArray();
+            object[] transactions = new object[dataArray.Length];
             for (int i = 0; i < transactions.Length; i++)
             {
-                transactions[i] = input_data.ElementAt(i)[transactionColumnId];
+                transactions[i] = dataArray[i][transactColIndex];
             }
-            string[] uniqueItems = transactions.Distinct().ToArray();
+            object[] uniqueItems = transactions.Distinct().ToArray();
             return uniqueItems;
         }
     }

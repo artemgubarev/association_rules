@@ -54,20 +54,18 @@ namespace association_rules.core
                 int transactionColumnIndex = int.Parse(tranColIndexTextEdit.Text);
                 int tItemColIndex = int.Parse(tItemColIndexTextEdit.Text);
                 bool colsHeaders = colnamesCheckEdit.Checked;
-                Apriori.Rules(
+                var apriori = new Apriori();
+                var rules = apriori.Rules(
                     data, out int power,
                      transactionColumnIndex, tItemColIndex,
                     min_support, max_support,
-                    min_confidence, max_confidence, 
+                    min_confidence, max_confidence,
                     colsHeaders
                     );
-                //var rules = AssociationRulesPythonAdapter.Rules(data, out int power,
-                //    min_support, max_support,
-                //    min_confidence,max_confidence, colsHeaders);
-                //FillResultsDataTable(rules);
-                //MessageBox.Show("Ассоциативные правила построены.\n" +
-                //                $"Количество правил = {rules.Count()}\n" + 
-                //                $"Мощность часто встречающихся множеств = {power}");
+                FillResultsDataTable(rules);
+                MessageBox.Show("Ассоциативные правила построены.\n" +
+                                $"Количество правил = {rules.Count()}\n" +
+                                $"Мощность часто встречающихся множеств = {power}");
             //}
             //catch (Exception exception)
             //{
@@ -75,13 +73,13 @@ namespace association_rules.core
             //}
         }
 
-        private void FillResultsDataTable(IEnumerable<string[]> rules)
+        private void FillResultsDataTable(IEnumerable<object[]> rules)
         {
             string[] colHeaders = new[]
             {
                 "Условие",
                 "Следствие",
-                "Поддержка",
+                "Поддержка %",
                 "Достоверность %",
                 "Лифт",
 
@@ -93,21 +91,7 @@ namespace association_rules.core
             }
             foreach (var rule in rules)
             {
-                var row = new object[colHeaders.Length];
-
-                double support = double.Parse(rule[4]);
-                double confidence = double.Parse(rule[5]);
-                double lift = double.Parse(rule[6]);
-
-                support *= 100;
-                confidence *= 100;
-
-                row[0] = rule[0];
-                row[1] = rule[1];
-                row[2] = support;
-                row[3] = confidence;
-                row[4] = lift;
-                dataTable.Rows.Add(row);
+                dataTable.Rows.Add(rule);
             }
             GridViewRefresh(resultsGridControl,resultsGridView,dataTable);
             resultsGridView.Columns[3].SortMode = ColumnSortMode.Custom;
@@ -170,24 +154,22 @@ namespace association_rules.core
             }
         }
 
-        private IEnumerable<string[]> GetDataTableData()
+        private IEnumerable<object[]> GetDataTableData()
         {
-            var data = new List<string[]>();
+            var data = new List<object[]>();
             var dataTable = (DataTable)gridControl.DataSource;
             int colsCount = dataTable.Columns.Count;
             int excludedColumnsCount = _excludedColumns.Count;
-
             if (colsCount - excludedColumnsCount < 2)
             {
                 throw new Exception("Для построения ассоциативных правил,\n" +
                                     " необходимо иметь как минимум 2 столбца");
             }
-
             if (dataTable != null)
             {
                 for (int i = 1; i < dataTable.Rows.Count; i++)
                 {
-                    var row = new List<string>();
+                    var row = new List<object>();
                     int diff = 0;
                     for (int j = 0; j < colsCount; j++)
                     {
