@@ -9,6 +9,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace association_rules.core
@@ -24,12 +25,22 @@ namespace association_rules.core
         };
         private string _currentFilePath;
         private readonly List<int> _excludedColumns = new List<int>();
+        private int _transactColIndex = 0;
+        private int _itemColIndex = 1;
 
         public AprioriUserControl()
         {
             InitializeComponent();
             _repositoryCheckEdit.QueryCheckStateByValue += _repositoryCheckEdit_QueryCheckStateByValue;
-            FillInalidData();
+            FillData();
+            SetCultureInfo();
+        }
+
+        static void SetCultureInfo()
+        {
+            CultureInfo cultureInfo = new CultureInfo("en-US");
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
+            Thread.CurrentThread.CurrentUICulture = cultureInfo;
         }
 
         private void _repositoryCheckEdit_QueryCheckStateByValue(object sender, DevExpress.XtraEditors.Controls.QueryCheckStateByValueEventArgs e)
@@ -51,13 +62,13 @@ namespace association_rules.core
                 double max_support = Double.Parse(maxSupportTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture);
                 double min_confidence = Double.Parse(minConfidenceTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture);
                 double max_confidence = Double.Parse(maxConfidenceTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture);
-                int transactionColumnIndex = int.Parse(tranColIndexTextEdit.Text);
-                int tItemColIndex = int.Parse(tItemColIndexTextEdit.Text);
+                int transactionColumnIndex = GetColIndex(int.Parse(tranColIndexTextEdit.Text));
+                int itemColIndex = GetColIndex(int.Parse(tItemColIndexTextEdit.Text));
                 bool colsHeaders = colnamesCheckEdit.Checked;
                 var apriori = new Apriori();
                 var rules = apriori.Rules(
                     data, out int power,
-                     transactionColumnIndex, tItemColIndex,
+                     transactionColumnIndex, itemColIndex,
                     min_support, max_support,
                     min_confidence, max_confidence,
                     colsHeaders
@@ -71,6 +82,22 @@ namespace association_rules.core
             //{
             //    MessageBox.Show(exception.Message);
             //}
+        }
+
+        private int GetColIndex(int index)
+        {
+            foreach (var colIndex in _excludedColumns)
+            {
+                if (colIndex <= index)
+                {
+                    index--;
+                }
+            }
+            while (index < 0)
+            {
+                index++;
+            }
+            return index;
         }
 
         private void FillResultsDataTable(IEnumerable<object[]> rules)
@@ -290,7 +317,7 @@ namespace association_rules.core
             UpdateDataTable();
         }
 
-        private void FillInalidData()
+        private void FillData()
         {
             minSupportTextEdit.Text = "0.01";
             maxSupportTextEdit.Text = "0.9";
@@ -339,6 +366,16 @@ namespace association_rules.core
             {
                 e.Appearance.BackColor = Color.DarkSalmon;
             }
+
+            if (colIndex == _itemColIndex)
+            {
+                e.Appearance.BackColor = Color.GreenYellow;
+            }
+
+            if (colIndex == _transactColIndex)
+            {
+                e.Appearance.BackColor = Color.Aquamarine;
+            }
         }
         
         private void GridViewRefresh(GridControl gridControl, GridView gridView, DataTable dataTable)
@@ -352,8 +389,35 @@ namespace association_rules.core
             gridView.LayoutChanged();
         }
 
+
         #endregion
 
-        
+        private void tranColIndexTextEdit_EditValueChanged(object sender, EventArgs e)
+        {
+            if (!int.TryParse(tranColIndexTextEdit.Text, NumberStyles.Any,
+                    CultureInfo.InvariantCulture, out int transactionIndex))
+            {
+                tranColIndexTextEdit.Text = _transactColIndex.ToString();
+            }
+            else
+            {
+                _transactColIndex = transactionIndex;
+            }
+            gridView.LayoutChanged();
+        }
+
+        private void tItemColIndexTextEdit_EditValueChanged(object sender, EventArgs e)
+        {
+            if (!int.TryParse(tItemColIndexTextEdit.Text, NumberStyles.Any,
+                    CultureInfo.InvariantCulture, out int tItemColIndex))
+            {
+                tItemColIndexTextEdit.Text = _itemColIndex.ToString();
+            }
+            else
+            {
+                _itemColIndex = tItemColIndex;
+            }
+            gridView.LayoutChanged();
+        }
     }
 }

@@ -4,23 +4,10 @@ using System.Linq;
 
 namespace association_rules.core
 {
-    /// <summary>
-    /// 
-    /// </summary>
     internal class TransactionEncoder
     {
-        /// <summary>
-        /// 
-        /// </summary>
         internal object[] ItemSet { get; private set; }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="inputData"></param>
-        /// <param name="transactColIndex"></param>
-        /// <param name="tItemColIndex"></param>
-        /// <returns></returns>
         internal bool[,] Transform(IEnumerable<object[]> inputData, int transactColIndex = 0, int tItemColIndex = 1)
         {
             object[] transactUniqueItems = GetUniqueItems(inputData, transactColIndex);
@@ -36,12 +23,6 @@ namespace association_rules.core
             return encoderArray;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="inputData"></param>
-        /// <param name="transactColIndex"></param>
-        /// <returns></returns>
         private object[] GetUniqueItems(IEnumerable<object[]> inputData, int transactColIndex = 0)
         {
             object[][] dataArray = inputData.ToArray();

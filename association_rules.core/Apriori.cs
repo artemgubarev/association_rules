@@ -1,28 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
-using DevExpress.Utils.Drawing.Animation;
 
 namespace association_rules.core
 {
     internal class Apriori
     {
         /// <summary>
-        /// 
+        /// Получить ассоциативные правила
         /// </summary>
-        /// <param name="inputData"></param>
-        /// <param name="power"></param>
-        /// <param name="transactColIndex"></param>
-        /// <param name="tItemColIndex"></param>
-        /// <param name="minSupport"></param>
-        /// <param name="maxSupport"></param>
-        /// <param name="minConfidence"></param>
-        /// <param name="maxConfidence"></param>
-        /// <param name="colHeaders"></param>
+        /// <param name="inputData">Входные данные</param>
+        /// <param name="power">Выходной параметр - мощность часто встречающихся множеств</param>
+        /// <param name="transactColIndex">Индекс столбца транзацкции</param>
+        /// <param name="itemColIndex">Индекс столбца элемента</param>
+        /// <param name="minSupport">Минимальная поддержка</param>
+        /// <param name="maxSupport">Максимальная поддержка</param>
+        /// <param name="minConfidence">Минимальное доверие</param>
+        /// <param name="maxConfidence">Максимальное доверие</param>
+        /// <param name="colHeaders">Исключать первую строку из датасета</param>
         internal IEnumerable<object[]> Rules(
             IEnumerable<object[]> inputData, out int power,
-            int transactColIndex = 0, int tItemColIndex = 1,
+            int transactColIndex = 0, int itemColIndex = 1,
             double minSupport = 0.5, double maxSupport = 1.0,
             double minConfidence = 0.5, double maxConfidence = 1.0,
             bool colHeaders = false)
@@ -34,7 +32,7 @@ namespace association_rules.core
             }
 
             var encoder = new TransactionEncoder();
-            bool[,] encodeArray = encoder.Transform(inputData, transactColIndex, tItemColIndex);
+            bool[,] encodeArray = encoder.Transform(inputData, transactColIndex, itemColIndex);
             object[] itemSet = encoder.ItemSet;
 
             var supportDict =
@@ -48,12 +46,13 @@ namespace association_rules.core
                 var array = GetArrayFromKey(item.Key);
                 int lenght = array.Length;
                 if (lenght == 1)
+                {
                     continue;
-                power = Math.Max(power, lenght);
+                }
                 for (int c = 1; c < array.Count(); c++)
                 {
                     var subsets = Utilities.Subsets(array.ToArray(), c);
-
+                    int count = 0;
                     foreach (var subset in subsets)
                     {
                         var XuY = array;
@@ -73,6 +72,7 @@ namespace association_rules.core
 
                         if (confidence < minConfidence || confidence > maxConfidence)
                         {
+                            count++;
                             continue;
                         }
                         double lift = confidence / Ysupp;
@@ -80,21 +80,16 @@ namespace association_rules.core
                             ruleSupp, confidence, lift);
                         rules.Add(rule);
                     }
+                    if (count == subsets.Length)
+                    {
+                        power = Math.Max(power, lenght);
+                    }
                 }
+               
             }
             return rules;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="itemSet"></param>
-        /// <param name="condition"></param>
-        /// <param name="consequence"></param>
-        /// <param name="support"></param>
-        /// <param name="confidence"></param>
-        /// <param name="lift"></param>
-        /// <returns></returns>
         private object[] BuildRule
         (
             object[] itemSet,
@@ -128,14 +123,6 @@ namespace association_rules.core
             return result;
         }
 
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="combinations"></param>
-        /// <param name="support"></param>
-        /// <param name="minSupport"></param>
-        /// <param name="maxSupport"></param>
         private void FilterSupport(
             ref int[][] combinations, ref double[] support,
             double minSupport = 0.5, double maxSupport = 1.0)
@@ -146,14 +133,6 @@ namespace association_rules.core
             combinations = Utilities.RemoveElementsByIndex(combinations, excludeIndexes).ToArray();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="encodeArray"></param>
-        /// <param name="itemSet"></param>
-        /// <param name="minSupport"></param>
-        /// <param name="maxSupport"></param>
-        /// <returns></returns>
         private Dictionary<string, double> SupportAllCombin(
             bool[,] encodeArray, object[] itemSet,
             double minSupport = 0.5, double maxSupport = 1.0)
@@ -205,11 +184,6 @@ namespace association_rules.core
             return supportDict;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="array"></param>
-        /// <returns></returns>
         private string GetKeyFromArray(IEnumerable<int> array)
         {
             string key = string.Empty;
@@ -221,11 +195,6 @@ namespace association_rules.core
             return key;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
         private int[] GetArrayFromKey(string key)
         {
             string[] elements = key.Split(',');
@@ -237,11 +206,6 @@ namespace association_rules.core
             return array;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="encodeArray"></param>
-        /// <returns></returns>
         private double[] Support(bool[,] encodeArray)
         {
             int transactionsNum = encodeArray.GetLength(0);
@@ -263,11 +227,6 @@ namespace association_rules.core
             return supports.ToArray();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="oldCombinations"></param>
-        /// <returns></returns>
         private int[][] GenerateNewCombinations(int[][] oldCombinations)
         {
             var itemsTypesInPreviousStep = oldCombinations.SelectMany(combination => combination).Distinct().ToList();

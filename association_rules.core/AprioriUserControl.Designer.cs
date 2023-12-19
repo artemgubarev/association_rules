@@ -60,6 +60,12 @@
             this.xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
             this.resultsGridControl = new DevExpress.XtraGrid.GridControl();
             this.resultsGridView = new DevExpress.XtraGrid.Views.Grid.GridView();
+            this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
+            this.labelControl7 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
+            this.pictureEdit2 = new DevExpress.XtraEditors.PictureEdit();
+            this.pictureEdit3 = new DevExpress.XtraEditors.PictureEdit();
+            this.labelControl9 = new DevExpress.XtraEditors.LabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupboxDelimiters)).BeginInit();
@@ -88,6 +94,9 @@
             this.xtraTabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.resultsGridControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resultsGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // gridControl
@@ -299,31 +308,27 @@
             // 
             // tItemColIndexTextEdit
             // 
-            this.tablePanel1.SetColumn(this.tItemColIndexTextEdit, 1);
             this.tItemColIndexTextEdit.Location = new System.Drawing.Point(169, 162);
             this.tItemColIndexTextEdit.Name = "tItemColIndexTextEdit";
-            this.tablePanel1.SetRow(this.tItemColIndexTextEdit, 6);
             this.tItemColIndexTextEdit.Size = new System.Drawing.Size(68, 20);
             this.tItemColIndexTextEdit.TabIndex = 18;
+            this.tItemColIndexTextEdit.EditValueChanged += new System.EventHandler(this.tItemColIndexTextEdit_EditValueChanged);
             // 
             // labelControl6
             // 
-            this.tablePanel1.SetColumn(this.labelControl6, 0);
             this.labelControl6.Location = new System.Drawing.Point(3, 165);
             this.labelControl6.Name = "labelControl6";
-            this.tablePanel1.SetRow(this.labelControl6, 6);
             this.labelControl6.Size = new System.Drawing.Size(159, 13);
             this.labelControl6.TabIndex = 18;
-            this.labelControl6.Text = "Столбец элемента транзакции:";
+            this.labelControl6.Text = "Столбец элемента:";
             // 
             // tranColIndexTextEdit
             // 
-            this.tablePanel1.SetColumn(this.tranColIndexTextEdit, 1);
             this.tranColIndexTextEdit.Location = new System.Drawing.Point(169, 136);
             this.tranColIndexTextEdit.Name = "tranColIndexTextEdit";
-            this.tablePanel1.SetRow(this.tranColIndexTextEdit, 5);
             this.tranColIndexTextEdit.Size = new System.Drawing.Size(68, 20);
             this.tranColIndexTextEdit.TabIndex = 17;
+            this.tranColIndexTextEdit.EditValueChanged += new System.EventHandler(this.tranColIndexTextEdit_EditValueChanged);
             // 
             // labelControl5
             // 
@@ -337,11 +342,9 @@
             // 
             // maxConfidenceTextEdit
             // 
-            this.tablePanel1.SetColumn(this.maxConfidenceTextEdit, 1);
             this.maxConfidenceTextEdit.Location = new System.Drawing.Point(169, 81);
             this.maxConfidenceTextEdit.Name = "maxConfidenceTextEdit";
             this.maxConfidenceTextEdit.Properties.AllowFocused = false;
-            this.tablePanel1.SetRow(this.maxConfidenceTextEdit, 3);
             this.maxConfidenceTextEdit.Size = new System.Drawing.Size(68, 20);
             this.maxConfidenceTextEdit.TabIndex = 14;
             // 
@@ -363,31 +366,25 @@
             // 
             // minSupportTextEdit
             // 
-            this.tablePanel1.SetColumn(this.minSupportTextEdit, 1);
             this.minSupportTextEdit.Location = new System.Drawing.Point(169, 3);
             this.minSupportTextEdit.Name = "minSupportTextEdit";
             this.minSupportTextEdit.Properties.AllowFocused = false;
-            this.tablePanel1.SetRow(this.minSupportTextEdit, 0);
             this.minSupportTextEdit.Size = new System.Drawing.Size(68, 20);
             this.minSupportTextEdit.TabIndex = 4;
             // 
             // maxSupportTextEdit
             // 
-            this.tablePanel1.SetColumn(this.maxSupportTextEdit, 1);
             this.maxSupportTextEdit.Location = new System.Drawing.Point(169, 29);
             this.maxSupportTextEdit.Name = "maxSupportTextEdit";
             this.maxSupportTextEdit.Properties.AllowFocused = false;
-            this.tablePanel1.SetRow(this.maxSupportTextEdit, 1);
             this.maxSupportTextEdit.Size = new System.Drawing.Size(68, 20);
             this.maxSupportTextEdit.TabIndex = 12;
             // 
             // minConfidenceTextEdit
             // 
-            this.tablePanel1.SetColumn(this.minConfidenceTextEdit, 1);
             this.minConfidenceTextEdit.Location = new System.Drawing.Point(169, 55);
             this.minConfidenceTextEdit.Name = "minConfidenceTextEdit";
             this.minConfidenceTextEdit.Properties.AllowFocused = false;
-            this.tablePanel1.SetRow(this.minConfidenceTextEdit, 2);
             this.minConfidenceTextEdit.Size = new System.Drawing.Size(68, 20);
             this.minConfidenceTextEdit.TabIndex = 10;
             // 
@@ -421,6 +418,12 @@
             // 
             // xtraTabPage1
             // 
+            this.xtraTabPage1.Controls.Add(this.labelControl9);
+            this.xtraTabPage1.Controls.Add(this.pictureEdit3);
+            this.xtraTabPage1.Controls.Add(this.pictureEdit2);
+            this.xtraTabPage1.Controls.Add(this.labelControl8);
+            this.xtraTabPage1.Controls.Add(this.labelControl7);
+            this.xtraTabPage1.Controls.Add(this.pictureEdit1);
             this.xtraTabPage1.Controls.Add(this.groupboxDelimiters);
             this.xtraTabPage1.Controls.Add(this.gridControl);
             this.xtraTabPage1.Controls.Add(this.openFileButton);
@@ -459,12 +462,78 @@
             this.resultsGridView.OptionsView.ShowGroupPanel = false;
             this.resultsGridView.OptionsView.ShowIndicator = false;
             // 
-            // association_rules_user_control
+            // pictureEdit1
+            // 
+            this.pictureEdit1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pictureEdit1.Location = new System.Drawing.Point(5, 331);
+            this.pictureEdit1.Name = "pictureEdit1";
+            this.pictureEdit1.Properties.AllowFocused = false;
+            this.pictureEdit1.Properties.Appearance.BackColor = System.Drawing.Color.Aquamarine;
+            this.pictureEdit1.Properties.Appearance.Options.UseBackColor = true;
+            this.pictureEdit1.Properties.NullText = " ";
+            this.pictureEdit1.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.pictureEdit1.Size = new System.Drawing.Size(20, 20);
+            this.pictureEdit1.TabIndex = 17;
+            // 
+            // labelControl7
+            // 
+            this.labelControl7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelControl7.Location = new System.Drawing.Point(31, 331);
+            this.labelControl7.Name = "labelControl7";
+            this.labelControl7.Size = new System.Drawing.Size(59, 13);
+            this.labelControl7.TabIndex = 18;
+            this.labelControl7.Text = "Транзакция";
+            // 
+            // labelControl8
+            // 
+            this.labelControl8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelControl8.Location = new System.Drawing.Point(31, 357);
+            this.labelControl8.Name = "labelControl8";
+            this.labelControl8.Size = new System.Drawing.Size(43, 13);
+            this.labelControl8.TabIndex = 19;
+            this.labelControl8.Text = "Элемент";
+            // 
+            // pictureEdit2
+            // 
+            this.pictureEdit2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pictureEdit2.Location = new System.Drawing.Point(5, 357);
+            this.pictureEdit2.Name = "pictureEdit2";
+            this.pictureEdit2.Properties.AllowFocused = false;
+            this.pictureEdit2.Properties.Appearance.BackColor = System.Drawing.Color.GreenYellow;
+            this.pictureEdit2.Properties.Appearance.Options.UseBackColor = true;
+            this.pictureEdit2.Properties.NullText = " ";
+            this.pictureEdit2.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.pictureEdit2.Size = new System.Drawing.Size(20, 20);
+            this.pictureEdit2.TabIndex = 20;
+            // 
+            // pictureEdit3
+            // 
+            this.pictureEdit3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pictureEdit3.Location = new System.Drawing.Point(5, 383);
+            this.pictureEdit3.Name = "pictureEdit3";
+            this.pictureEdit3.Properties.AllowFocused = false;
+            this.pictureEdit3.Properties.Appearance.BackColor = System.Drawing.Color.DarkSalmon;
+            this.pictureEdit3.Properties.Appearance.Options.UseBackColor = true;
+            this.pictureEdit3.Properties.NullText = " ";
+            this.pictureEdit3.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.pictureEdit3.Size = new System.Drawing.Size(20, 20);
+            this.pictureEdit3.TabIndex = 21;
+            // 
+            // labelControl9
+            // 
+            this.labelControl9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelControl9.Location = new System.Drawing.Point(31, 383);
+            this.labelControl9.Name = "labelControl9";
+            this.labelControl9.Size = new System.Drawing.Size(117, 13);
+            this.labelControl9.TabIndex = 22;
+            this.labelControl9.Text = "Исключенные столбцы";
+            // 
+            // AprioriUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.xtraTabControl1);
-            this.Name = "association_rules_user_control";
+            this.Name = "AprioriUserControl";
             this.Size = new System.Drawing.Size(750, 500);
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).EndInit();
@@ -493,9 +562,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).EndInit();
             this.xtraTabControl1.ResumeLayout(false);
             this.xtraTabPage1.ResumeLayout(false);
+            this.xtraTabPage1.PerformLayout();
             this.xtraTabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.resultsGridControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.resultsGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -534,5 +607,11 @@
         private DevExpress.XtraEditors.LabelControl labelControl5;
         private DevExpress.XtraEditors.TextEdit tItemColIndexTextEdit;
         private DevExpress.XtraEditors.LabelControl labelControl6;
+        private DevExpress.XtraEditors.PictureEdit pictureEdit3;
+        private DevExpress.XtraEditors.PictureEdit pictureEdit2;
+        private DevExpress.XtraEditors.LabelControl labelControl8;
+        private DevExpress.XtraEditors.LabelControl labelControl7;
+        private DevExpress.XtraEditors.PictureEdit pictureEdit1;
+        private DevExpress.XtraEditors.LabelControl labelControl9;
     }
 }

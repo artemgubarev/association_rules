@@ -37,13 +37,6 @@ namespace association_rules.core
             return list;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="collection"></param>
-        /// <param name="predicate"></param>
-        /// <returns></returns>
         internal static IEnumerable<bool> GetMask<T>(IEnumerable<T> collection, Func<T, bool> predicate)
         {
             bool[] mask = new bool[collection.Count()];
@@ -59,14 +52,6 @@ namespace association_rules.core
             return mask;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="input"></param>
-        /// <param name="height"></param>
-        /// <param name="width"></param>
-        /// <returns></returns>
         internal static T[][] Make2DArray<T>(IEnumerable<T> input, int height, int width)
         {
             var inputArray = input.ToArray();
@@ -83,13 +68,6 @@ namespace association_rules.core
             return output;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="array"></param>
-        /// <param name="combin"></param>
-        /// <returns></returns>
         internal static T[,,] ExtractSubarrays<T>(T[,] array, int[][] combin)
         {
             int numRows = array.GetLength(0);
@@ -109,11 +87,6 @@ namespace association_rules.core
             return subarrays;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="subarrays"></param>
-        /// <returns></returns>
         internal static bool[,] CheckAll(bool[,,] subarrays)
         {
             int numRows = subarrays.GetLength(0);
@@ -133,13 +106,6 @@ namespace association_rules.core
             return result;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="arr"></param>
-        /// <param name="length"></param>
-        /// <returns></returns>
         internal static T[][] Subsets<T>(T[] arr, int length)
         {
             var result = new List<T[]>();
@@ -147,15 +113,6 @@ namespace association_rules.core
             return result.ToArray();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="arr"></param>
-        /// <param name="length"></param>
-        /// <param name="index"></param>
-        /// <param name="currentSubset"></param>
-        /// <param name="result"></param>
         private static void GenerateSubsetsHelper<T>(T[] arr, int length, int index, List<T> currentSubset, List<T[]> result)
         {
             if (length == 0)
