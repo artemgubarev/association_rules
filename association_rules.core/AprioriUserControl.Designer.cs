@@ -57,15 +57,17 @@
             this.labelControl2 = new DevExpress.XtraEditors.LabelControl();
             this.xtraTabControl1 = new DevExpress.XtraTab.XtraTabControl();
             this.xtraTabPage1 = new DevExpress.XtraTab.XtraTabPage();
+            this.labelControl9 = new DevExpress.XtraEditors.LabelControl();
+            this.pictureEdit3 = new DevExpress.XtraEditors.PictureEdit();
+            this.pictureEdit2 = new DevExpress.XtraEditors.PictureEdit();
+            this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl7 = new DevExpress.XtraEditors.LabelControl();
+            this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
             this.xtraTabPage2 = new DevExpress.XtraTab.XtraTabPage();
             this.resultsGridControl = new DevExpress.XtraGrid.GridControl();
             this.resultsGridView = new DevExpress.XtraGrid.Views.Grid.GridView();
-            this.pictureEdit1 = new DevExpress.XtraEditors.PictureEdit();
-            this.labelControl7 = new DevExpress.XtraEditors.LabelControl();
-            this.labelControl8 = new DevExpress.XtraEditors.LabelControl();
-            this.pictureEdit2 = new DevExpress.XtraEditors.PictureEdit();
-            this.pictureEdit3 = new DevExpress.XtraEditors.PictureEdit();
-            this.labelControl9 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl10 = new DevExpress.XtraEditors.LabelControl();
+            this.labelControl11 = new DevExpress.XtraEditors.LabelControl();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.groupboxDelimiters)).BeginInit();
@@ -91,12 +93,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.xtraTabControl1)).BeginInit();
             this.xtraTabControl1.SuspendLayout();
             this.xtraTabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit2.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).BeginInit();
             this.xtraTabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.resultsGridControl)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.resultsGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit2.Properties)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // gridControl
@@ -104,10 +106,10 @@
             this.gridControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.gridControl.Location = new System.Drawing.Point(253, 3);
+            this.gridControl.Location = new System.Drawing.Point(253, 19);
             this.gridControl.MainView = this.gridView;
             this.gridControl.Name = "gridControl";
-            this.gridControl.Size = new System.Drawing.Size(492, 469);
+            this.gridControl.Size = new System.Drawing.Size(492, 453);
             this.gridControl.TabIndex = 13;
             this.gridControl.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView});
@@ -350,19 +352,23 @@
             // 
             // labelControl1
             // 
+            this.tablePanel1.SetColumn(this.labelControl1, 0);
             this.labelControl1.Location = new System.Drawing.Point(3, 6);
             this.labelControl1.Name = "labelControl1";
-            this.labelControl1.Size = new System.Drawing.Size(129, 13);
+            this.tablePanel1.SetRow(this.labelControl1, 0);
+            this.labelControl1.Size = new System.Drawing.Size(143, 13);
             this.labelControl1.TabIndex = 8;
-            this.labelControl1.Text = "Минимальная поддержка";
+            this.labelControl1.Text = "Минимальная поддержка %";
             // 
             // labelControl4
             // 
+            this.tablePanel1.SetColumn(this.labelControl4, 0);
             this.labelControl4.Location = new System.Drawing.Point(3, 84);
             this.labelControl4.Name = "labelControl4";
-            this.labelControl4.Size = new System.Drawing.Size(119, 13);
+            this.tablePanel1.SetRow(this.labelControl4, 3);
+            this.labelControl4.Size = new System.Drawing.Size(133, 13);
             this.labelControl4.TabIndex = 13;
-            this.labelControl4.Text = "Максимальное доверие";
+            this.labelControl4.Text = "Максимальное доверие %";
             // 
             // minSupportTextEdit
             // 
@@ -390,19 +396,23 @@
             // 
             // labelControl3
             // 
+            this.tablePanel1.SetColumn(this.labelControl3, 0);
             this.labelControl3.Location = new System.Drawing.Point(3, 32);
             this.labelControl3.Name = "labelControl3";
-            this.labelControl3.Size = new System.Drawing.Size(134, 13);
+            this.tablePanel1.SetRow(this.labelControl3, 1);
+            this.labelControl3.Size = new System.Drawing.Size(148, 13);
             this.labelControl3.TabIndex = 11;
-            this.labelControl3.Text = "Максимальная поддержка";
+            this.labelControl3.Text = "Максимальная поддержка %";
             // 
             // labelControl2
             // 
+            this.tablePanel1.SetColumn(this.labelControl2, 0);
             this.labelControl2.Location = new System.Drawing.Point(3, 58);
             this.labelControl2.Name = "labelControl2";
-            this.labelControl2.Size = new System.Drawing.Size(114, 13);
+            this.tablePanel1.SetRow(this.labelControl2, 2);
+            this.labelControl2.Size = new System.Drawing.Size(128, 13);
             this.labelControl2.TabIndex = 9;
-            this.labelControl2.Text = "Минимальное доверие";
+            this.labelControl2.Text = "Минимальное доверие %";
             // 
             // xtraTabControl1
             // 
@@ -418,6 +428,7 @@
             // 
             // xtraTabPage1
             // 
+            this.xtraTabPage1.Controls.Add(this.labelControl10);
             this.xtraTabPage1.Controls.Add(this.labelControl9);
             this.xtraTabPage1.Controls.Add(this.pictureEdit3);
             this.xtraTabPage1.Controls.Add(this.pictureEdit2);
@@ -433,8 +444,79 @@
             this.xtraTabPage1.Size = new System.Drawing.Size(748, 475);
             this.xtraTabPage1.Text = "Ввод данных";
             // 
+            // labelControl9
+            // 
+            this.labelControl9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelControl9.Location = new System.Drawing.Point(31, 383);
+            this.labelControl9.Name = "labelControl9";
+            this.labelControl9.Size = new System.Drawing.Size(117, 13);
+            this.labelControl9.TabIndex = 22;
+            this.labelControl9.Text = "Исключенные столбцы";
+            // 
+            // pictureEdit3
+            // 
+            this.pictureEdit3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pictureEdit3.Location = new System.Drawing.Point(5, 383);
+            this.pictureEdit3.Name = "pictureEdit3";
+            this.pictureEdit3.Properties.AllowFocused = false;
+            this.pictureEdit3.Properties.Appearance.BackColor = System.Drawing.Color.DarkSalmon;
+            this.pictureEdit3.Properties.Appearance.Options.UseBackColor = true;
+            this.pictureEdit3.Properties.NullText = " ";
+            this.pictureEdit3.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.pictureEdit3.Size = new System.Drawing.Size(20, 20);
+            this.pictureEdit3.TabIndex = 21;
+            // 
+            // pictureEdit2
+            // 
+            this.pictureEdit2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pictureEdit2.Location = new System.Drawing.Point(5, 357);
+            this.pictureEdit2.Name = "pictureEdit2";
+            this.pictureEdit2.Properties.AllowFocused = false;
+            this.pictureEdit2.Properties.Appearance.BackColor = System.Drawing.Color.GreenYellow;
+            this.pictureEdit2.Properties.Appearance.Options.UseBackColor = true;
+            this.pictureEdit2.Properties.NullText = " ";
+            this.pictureEdit2.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.pictureEdit2.Size = new System.Drawing.Size(20, 20);
+            this.pictureEdit2.TabIndex = 20;
+            this.pictureEdit2.Visible = false;
+            // 
+            // labelControl8
+            // 
+            this.labelControl8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelControl8.Location = new System.Drawing.Point(31, 357);
+            this.labelControl8.Name = "labelControl8";
+            this.labelControl8.Size = new System.Drawing.Size(43, 13);
+            this.labelControl8.TabIndex = 19;
+            this.labelControl8.Text = "Элемент";
+            this.labelControl8.Visible = false;
+            // 
+            // labelControl7
+            // 
+            this.labelControl7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.labelControl7.Location = new System.Drawing.Point(31, 331);
+            this.labelControl7.Name = "labelControl7";
+            this.labelControl7.Size = new System.Drawing.Size(59, 13);
+            this.labelControl7.TabIndex = 18;
+            this.labelControl7.Text = "Транзакция";
+            this.labelControl7.Visible = false;
+            // 
+            // pictureEdit1
+            // 
+            this.pictureEdit1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pictureEdit1.Location = new System.Drawing.Point(5, 331);
+            this.pictureEdit1.Name = "pictureEdit1";
+            this.pictureEdit1.Properties.AllowFocused = false;
+            this.pictureEdit1.Properties.Appearance.BackColor = System.Drawing.Color.Aquamarine;
+            this.pictureEdit1.Properties.Appearance.Options.UseBackColor = true;
+            this.pictureEdit1.Properties.NullText = " ";
+            this.pictureEdit1.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
+            this.pictureEdit1.Size = new System.Drawing.Size(20, 20);
+            this.pictureEdit1.TabIndex = 17;
+            this.pictureEdit1.Visible = false;
+            // 
             // xtraTabPage2
             // 
+            this.xtraTabPage2.Controls.Add(this.labelControl11);
             this.xtraTabPage2.Controls.Add(this.resultsGridControl);
             this.xtraTabPage2.Name = "xtraTabPage2";
             this.xtraTabPage2.Size = new System.Drawing.Size(748, 475);
@@ -462,71 +544,20 @@
             this.resultsGridView.OptionsView.ShowGroupPanel = false;
             this.resultsGridView.OptionsView.ShowIndicator = false;
             // 
-            // pictureEdit1
+            // labelControl10
             // 
-            this.pictureEdit1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.pictureEdit1.Location = new System.Drawing.Point(5, 331);
-            this.pictureEdit1.Name = "pictureEdit1";
-            this.pictureEdit1.Properties.AllowFocused = false;
-            this.pictureEdit1.Properties.Appearance.BackColor = System.Drawing.Color.Aquamarine;
-            this.pictureEdit1.Properties.Appearance.Options.UseBackColor = true;
-            this.pictureEdit1.Properties.NullText = " ";
-            this.pictureEdit1.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pictureEdit1.Size = new System.Drawing.Size(20, 20);
-            this.pictureEdit1.TabIndex = 17;
+            this.labelControl10.Location = new System.Drawing.Point(253, 0);
+            this.labelControl10.Name = "labelControl10";
+            this.labelControl10.Size = new System.Drawing.Size(242, 13);
+            this.labelControl10.TabIndex = 2;
+            this.labelControl10.Text = "Нажмите на галочку чтобы исключить столбец";
             // 
-            // labelControl7
+            // labelControl11
             // 
-            this.labelControl7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelControl7.Location = new System.Drawing.Point(31, 331);
-            this.labelControl7.Name = "labelControl7";
-            this.labelControl7.Size = new System.Drawing.Size(59, 13);
-            this.labelControl7.TabIndex = 18;
-            this.labelControl7.Text = "Транзакция";
-            // 
-            // labelControl8
-            // 
-            this.labelControl8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelControl8.Location = new System.Drawing.Point(31, 357);
-            this.labelControl8.Name = "labelControl8";
-            this.labelControl8.Size = new System.Drawing.Size(43, 13);
-            this.labelControl8.TabIndex = 19;
-            this.labelControl8.Text = "Элемент";
-            // 
-            // pictureEdit2
-            // 
-            this.pictureEdit2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.pictureEdit2.Location = new System.Drawing.Point(5, 357);
-            this.pictureEdit2.Name = "pictureEdit2";
-            this.pictureEdit2.Properties.AllowFocused = false;
-            this.pictureEdit2.Properties.Appearance.BackColor = System.Drawing.Color.GreenYellow;
-            this.pictureEdit2.Properties.Appearance.Options.UseBackColor = true;
-            this.pictureEdit2.Properties.NullText = " ";
-            this.pictureEdit2.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pictureEdit2.Size = new System.Drawing.Size(20, 20);
-            this.pictureEdit2.TabIndex = 20;
-            // 
-            // pictureEdit3
-            // 
-            this.pictureEdit3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.pictureEdit3.Location = new System.Drawing.Point(5, 383);
-            this.pictureEdit3.Name = "pictureEdit3";
-            this.pictureEdit3.Properties.AllowFocused = false;
-            this.pictureEdit3.Properties.Appearance.BackColor = System.Drawing.Color.DarkSalmon;
-            this.pictureEdit3.Properties.Appearance.Options.UseBackColor = true;
-            this.pictureEdit3.Properties.NullText = " ";
-            this.pictureEdit3.Properties.ShowCameraMenuItem = DevExpress.XtraEditors.Controls.CameraMenuItemVisibility.Auto;
-            this.pictureEdit3.Size = new System.Drawing.Size(20, 20);
-            this.pictureEdit3.TabIndex = 21;
-            // 
-            // labelControl9
-            // 
-            this.labelControl9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.labelControl9.Location = new System.Drawing.Point(31, 383);
-            this.labelControl9.Name = "labelControl9";
-            this.labelControl9.Size = new System.Drawing.Size(117, 13);
-            this.labelControl9.TabIndex = 22;
-            this.labelControl9.Text = "Исключенные столбцы";
+            this.labelControl11.Location = new System.Drawing.Point(3, 3);
+            this.labelControl11.Name = "labelControl11";
+            this.labelControl11.Size = new System.Drawing.Size(0, 13);
+            this.labelControl11.TabIndex = 15;
             // 
             // AprioriUserControl
             // 
@@ -563,12 +594,13 @@
             this.xtraTabControl1.ResumeLayout(false);
             this.xtraTabPage1.ResumeLayout(false);
             this.xtraTabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit2.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).EndInit();
             this.xtraTabPage2.ResumeLayout(false);
+            this.xtraTabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.resultsGridControl)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.resultsGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit1.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit2.Properties)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureEdit3.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -613,5 +645,7 @@
         private DevExpress.XtraEditors.LabelControl labelControl7;
         private DevExpress.XtraEditors.PictureEdit pictureEdit1;
         private DevExpress.XtraEditors.LabelControl labelControl9;
+        private DevExpress.XtraEditors.LabelControl labelControl10;
+        private DevExpress.XtraEditors.LabelControl labelControl11;
     }
 }

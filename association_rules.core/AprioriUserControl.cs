@@ -54,14 +54,14 @@ namespace association_rules.core
 
         private void runButton_Click(object sender, EventArgs e)
         {
-            //try
-            //{
+            try
+            {
                 var data = GetDataTableData();
                 InputDataValidate(data.ElementAt(0).Length);
-                double min_support = Double.Parse(minSupportTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture);
-                double max_support = Double.Parse(maxSupportTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture);
-                double min_confidence = Double.Parse(minConfidenceTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture);
-                double max_confidence = Double.Parse(maxConfidenceTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture);
+                double min_support = Double.Parse(minSupportTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture)/100;
+                double max_support = Double.Parse(maxSupportTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture)/100;
+                double min_confidence = Double.Parse(minConfidenceTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture) / 100;
+                double max_confidence = Double.Parse(maxConfidenceTextEdit.Text, NumberStyles.Any, CultureInfo.InvariantCulture) / 100;
                 int transactionColumnIndex = GetColIndex(int.Parse(tranColIndexTextEdit.Text));
                 int itemColIndex = GetColIndex(int.Parse(tItemColIndexTextEdit.Text));
                 bool colsHeaders = colnamesCheckEdit.Checked;
@@ -76,12 +76,13 @@ namespace association_rules.core
                 FillResultsDataTable(rules);
                 MessageBox.Show("Ассоциативные правила построены.\n" +
                                 $"Количество правил = {rules.Count()}\n" +
-                                $"Мощность часто встречающихся множеств = {power}");
-            //}
-            //catch (Exception exception)
-            //{
-            //    MessageBox.Show(exception.Message);
-            //}
+                                $"Мощность часто встречающихся множеств = {power}\n" +
+                                $"В условияъ и следствиях элементы перечисленны через запятую");
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
         }
 
         private int GetColIndex(int index)
@@ -256,7 +257,7 @@ namespace association_rules.core
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
             {
-                openFileDialog.InitialDirectory = "c:\\";
+                openFileDialog.InitialDirectory = "C:\\Users\\gubarev.av\\Desktop\\datasets";
                 openFileDialog.Filter = "All files (*.*)|*.*";
                 openFileDialog.FilterIndex = 2;
                 openFileDialog.RestoreDirectory = true;
@@ -319,10 +320,10 @@ namespace association_rules.core
 
         private void FillData()
         {
-            minSupportTextEdit.Text = "0.01";
-            maxSupportTextEdit.Text = "0.9";
-            minConfidenceTextEdit.Text = "0.2";
-            maxConfidenceTextEdit.Text = "0.9";
+            minSupportTextEdit.Text = "1";
+            maxSupportTextEdit.Text = "90";
+            minConfidenceTextEdit.Text = "1";
+            maxConfidenceTextEdit.Text = "90";
             tranColIndexTextEdit.Text = "0";
             tItemColIndexTextEdit.Text = "1";
         }
@@ -367,15 +368,15 @@ namespace association_rules.core
                 e.Appearance.BackColor = Color.DarkSalmon;
             }
 
-            if (colIndex == _itemColIndex)
-            {
-                e.Appearance.BackColor = Color.GreenYellow;
-            }
+            //if (colIndex == _itemColIndex)
+            //{
+            //    e.Appearance.BackColor = Color.GreenYellow;
+            //}
 
-            if (colIndex == _transactColIndex)
-            {
-                e.Appearance.BackColor = Color.Aquamarine;
-            }
+            //if (colIndex == _transactColIndex)
+            //{
+            //    e.Appearance.BackColor = Color.Aquamarine;
+            //}
         }
         
         private void GridViewRefresh(GridControl gridControl, GridView gridView, DataTable dataTable)

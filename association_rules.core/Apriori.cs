@@ -49,6 +49,7 @@ namespace association_rules.core
                 {
                     continue;
                 }
+                power = Math.Max(power, lenght);
                 for (int c = 1; c < array.Count(); c++)
                 {
                     var subsets = Utilities.Subsets(array.ToArray(), c);
@@ -79,10 +80,6 @@ namespace association_rules.core
                         var rule = BuildRule(itemSet, XuY.Except(subset).ToArray(), X.ToArray(),
                             ruleSupp, confidence, lift);
                         rules.Add(rule);
-                    }
-                    if (count == subsets.Length)
-                    {
-                        power = Math.Max(power, lenght);
                     }
                 }
                
